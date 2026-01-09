@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sklep ze świecami</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>Sklep ze świecami</h1>
+    <nav>
+      <button id="cart-button">Mój koszyk (<span id="cart-count">0</span>)</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="products" class="products-grid"></section>
+
+    <section id="cart" class="cart hidden">
+      <h2>Mój koszyk</h2>
+      <div id="cart-contents"></div>
+      <div class="cart-actions">
+        <button id="clear-cart">Wyczyść koszyk</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Prosty sklep demonstracyjny — lokalny frontend</small>
+  </footer>
+</body>
+</html>
