@@ -1,8 +1,6 @@
 const products = [
-  {id:1,name:'Świeca Zapachowa: Lawenda',price:29, img:'https://picsum.photos/seed/lavender/600/400'},
-  {id:2,name:'Świeca Sojowa: Wanilia',price:35, img:'https://picsum.photos/seed/vanilla/600/400'},
-  {id:3,name:'Świeca Dekor: Róża',price:39, img:'https://picsum.photos/seed/rose/600/400'},
-  {id:4,name:'Świeca Relaks: Ylang Ylang',price:32, img:'https://picsum.photos/seed/ylang/600/400'}
+  {id:1,name:'Bukiet ze świec',price:29, img:'images/bukiet.jpg'},
+  {id:2,name:'Bukiet box',price:35, img:'images/green_box.jpg'},
 ];
 
 function $(sel){return document.querySelector(sel)}
