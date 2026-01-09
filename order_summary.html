@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Podsumowanie zamówienia — Lumos by Luna</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link">
+      <img src="images/logo.jpg" alt="Lumos by Luna" class="site-logo">
+    </a>
+    <nav>
+      <a href="cart.html" class="back-link">Powrót do zamówienia</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="order-summary">
+      <h2>Podsumowanie zamówienia</h2>
+      <div id="summary-contents"></div>
+      <div class="summary-total" id="summary-total"></div>
+
+      <div class="pickup">
+        <label for="pickup-date">Wybierz datę odbioru:</label>
+        <input type="date" id="pickup-date">
+      </div>
+
+      <div class="summary-actions">
+        <button id="send-approval">Wyślij do akceptacji</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Sklep demonstracyjny — lokalny frontend</small>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const cart = loadCart();
+      const container = document.getElementById('summary-contents');
+      const totalEl = document.getElementById('summary-total');
+      if(!container){return}
+      if(!cart || cart.length===0){
+        container.innerHTML = '<p>Koszyk jest pusty.</p>';
+        totalEl.textContent = '';
+        return;
+      }
+      let total = 0;
+      container.innerHTML = '';
+      cart.forEach(ci => {
+        const prod = products.find(p=>p.id===ci.id);
+        if(!prod) return;
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <img src="${prod.img}" alt="${prod.name}">
+          <div style="flex:1">
+            <strong>${prod.name}</strong>
+            <div>${ci.qty} × ${prod.price} PLN</div>
+          </div>
+          <div>${ci.qty * prod.price} PLN</div>
+        `;
+        container.appendChild(row);
+        total += ci.qty * prod.price;
+      });
+      totalEl.textContent = `Suma: ${total} PLN`;
+
+      const sendBtn = document.getElementById('send-approval');
+      if(sendBtn){
+        sendBtn.addEventListener('click',()=>{
+          const date = document.getElementById('pickup-date').value;
+          if(!date){ alert('Wybierz datę odbioru.'); return; }
+          const pending = { cart, date, total };
+          localStorage.setItem('pendingOrder', JSON.stringify(pending));
+          window.location.href = 'contact.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

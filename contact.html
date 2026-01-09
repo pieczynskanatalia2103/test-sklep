@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Formularz kontaktowy — Lumos by Luna</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script defer src="js/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="logo-link">
+      <img src="images/logo.jpg" alt="Lumos by Luna" class="site-logo">
+    </a>
+    <nav>
+      <a href="/" class="back-link">Strona główna</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="contact-form">
+      <h2>Kontakt / Zatwierdzenie zamówienia</h2>
+      <div id="pending-order"></div>
+
+      <form id="contact-form">
+        <label>Imię i nazwisko<br><input type="text" name="name" required></label><br>
+        <label>Email<br><input type="email" name="email" required></label><br>
+        <label>Telefon<br><input type="tel" name="phone"></label><br>
+        <label>Wiadomość<br><textarea name="message" rows="4"></textarea></label><br>
+        <button type="submit">Wyślij</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <small>Sklep demonstracyjny — lokalny frontend</small>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      const pendingRaw = localStorage.getItem('pendingOrder');
+      const container = document.getElementById('pending-order');
+      if(!container) return;
+      if(!pendingRaw){
+        container.innerHTML = '<p>Brak oczekującego zamówienia.</p>';
+      } else {
+        try{
+          const pending = JSON.parse(pendingRaw);
+          let html = `<p>Data odbioru: <strong>${pending.date}</strong></p>`;
+          html += '<div>';
+          pending.cart.forEach(ci=>{
+            const prod = products.find(p=>p.id===ci.id);
+            if(!prod) return;
+            html += `<div class="cart-item"><img src="${prod.img}" alt="${prod.name}"><div style=\"flex:1\"><strong>${prod.name}</strong><div>${ci.qty} × ${prod.price} PLN</div></div><div>${ci.qty*prod.price} PLN</div></div>`;
+          });
+          html += `</div><p><strong>Suma: ${pending.total} PLN</strong></p>`;
+          container.innerHTML = html;
+        }catch(e){ container.innerHTML = '<p>Błąd odczytu zamówienia.</p>'; }
+      }
+
+      const form = document.getElementById('contact-form');
+      if(!form) return;
+      form.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        // In a real app we'd send this to the server. Here we'll simulate success.
+        localStorage.removeItem('pendingOrder');
+        localStorage.removeItem('cart');
+        alert('Zamówienie wysłane do akceptacji. Dziękujemy!');
+        window.location.href = '/';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Lumos by Luna</title>
+  <title>Moje zamówienie — Lumos by Luna</title>
   <link rel="stylesheet" href="css/styles.css">
   <script defer src="js/app.js"></script>
 </head>
@@ -13,13 +13,19 @@
       <img src="images/logo.jpg" alt="Lumos by Luna" class="site-logo">
     </a>
     <nav>
-      <a href="cart.html" id="cart-link" class="cart-link">Moje zamówienie(<span id="cart-count">0</span>)</a>
+      <a href="/" class="back-link">Kontynuuj zakupy</a>
     </nav>
   </header>
 
   <main>
-    <section id="products" class="products-grid"></section>
-
+    <section class="cart">
+      <h2>Moje zamówienie</h2>
+      <div id="cart-contents"></div>
+      <div class="cart-actions">
+        <button id="clear-cart">Wyczyść zamówienie</button>
+        <button id="confirm-order" class="confirm">Zatwierdź zamówienie</button>
+      </div>
+    </section>
   </main>
 
   <footer>

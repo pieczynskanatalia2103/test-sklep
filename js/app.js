@@ -39,11 +39,15 @@ function clearCart(){
 function updateCartCount(){
   const cart = loadCart();
   const count = cart.reduce((s,i)=>s+i.qty,0);
-  $('#cart-count').textContent = count;
+  const el = $('#cart-count');
+  if(el) el.textContent = count;
+  const confirmBtn = $('#confirm-order');
+  if(confirmBtn) confirmBtn.disabled = count === 0;
 }
 
 function renderProducts(){
   const root = $('#products');
+  if(!root) return;
   root.innerHTML = '';
   products.forEach(p=>{
     const el = document.createElement('article');
@@ -63,6 +67,7 @@ function renderProducts(){
 
 function renderCart(){
   const container = $('#cart-contents');
+  if(!container) return;
   const cart = loadCart();
   if(cart.length===0){
     container.innerHTML = '<p>Koszyk jest pusty.</p>';
@@ -71,6 +76,7 @@ function renderCart(){
   container.innerHTML = '';
   cart.forEach(ci=>{
     const prod = products.find(p=>p.id===ci.id);
+    if(!prod) return; // skip unknown product ids
     const el = document.createElement('div');
     el.className = 'cart-item';
     el.innerHTML = `
@@ -97,6 +103,27 @@ function showCartToggle(){
 document.addEventListener('DOMContentLoaded',()=>{
   renderProducts();
   updateCartCount();
-  $('#cart-button').addEventListener('click',showCartToggle);
-  $('#clear-cart').addEventListener('click',clearCart);
+  const cartBtn = $('#cart-button');
+  if(cartBtn) cartBtn.addEventListener('click',showCartToggle);
+
+  const clearBtn = $('#clear-cart');
+  if(clearBtn) clearBtn.addEventListener('click',clearCart);
+
+  const confirmBtn = $('#confirm-order');
+  if(confirmBtn){
+    // disable if empty on load
+    confirmBtn.disabled = loadCart().length === 0;
+    confirmBtn.addEventListener('click',()=>{
+      const cart = loadCart();
+      if(!cart || cart.length===0){
+        alert('Koszyk jest pusty.');
+        return;
+      }
+      window.location.href = 'order_summary.html';
+    });
+  }
+
+  // If we're on the dedicated cart page, render its contents
+  const cartContents = $('#cart-contents');
+  if(cartContents) renderCart();
 });
